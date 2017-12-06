@@ -29,22 +29,22 @@ int main(int argc, char const* argv[])
     Y[i] = 2.3;
     Z[i] = 0.0;
   }
-  long len2 = len/1.1;
+
   chrono::steady_clock::time_point begin, end;
 
 #pragma omp target data map(tofrom:Z[:len],Y[:len],X[:len])
 {
-    long zero = 0;
+    long one = 1;
     
     {
       // Measure time for calculation only
       begin = chrono::steady_clock::now();
       #pragma omp target teams
-        zaxpy_(&zero, &len2, &len, X, Y, Z);
+        zaxpy_(&one, &len, &len, X, Y, Z);
       end = chrono::steady_clock::now();
     }
 }
 
-  printf("%ld %.1f %.1f %ld microseconds\n", len, Z[4], Z[len-4], chrono::duration_cast<chrono::microseconds>(end - begin).count());
+  printf("%ld %.1f %.1f %ld microseconds\n", len, Z[0], Z[len-1], chrono::duration_cast<chrono::microseconds>(end - begin).count());
   return 0;
 }
