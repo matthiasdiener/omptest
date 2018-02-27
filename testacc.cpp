@@ -29,7 +29,7 @@ int main(int argc, char const* argv[])
     Z[i] = 0.0;
   }
   long len2 = len/1.1;
-  long zero = 0;
+  long one = 1;
   chrono::steady_clock::time_point begin, end;
 
 #pragma acc data copy(X, Y, Z, zero, len, len2)
@@ -38,7 +38,7 @@ int main(int argc, char const* argv[])
       // Measure time for calculation only
       begin = chrono::steady_clock::now();
       #pragma acc kernels
-        zaxpy_(&zero, &len2, &len, X, Y, Z);
+        zaxpy_(&one, &len2, &len, X, Y, Z);
       end = chrono::steady_clock::now();
     }
 }
