@@ -2,3 +2,4 @@ testacc
 testomp
 testcuda
 *.o
+gcc-offload/
