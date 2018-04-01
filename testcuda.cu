@@ -41,8 +41,8 @@ main(int argc, char **argv)
     // Initialize the host input vectors
     for (int i = 0; i < numElements; ++i)
     {
-        h_A[i] = drand48();
-        h_B[i] = drand48();
+        h_A[i] = 1.5;
+        h_B[i] = 2.3;
     }
 
     // Allocate the device input vector A
