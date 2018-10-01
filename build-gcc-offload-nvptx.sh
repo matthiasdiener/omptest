@@ -47,7 +47,8 @@ cd ..
 mkdir build-nvptx-gcc
 cd build-nvptx-gcc
 ../gcc-7.3.0/configure \
-	--target=nvptx-none --with-build-time-tools=$install_dir/nvptx-none/bin \
+	--target=nvptx-none \
+	--with-build-time-tools=$install_dir/nvptx-none/bin \
 	--enable-as-accelerator-for=$target \
 	--disable-sjlj-exceptions \
 	--enable-newlib-io-long-long \
