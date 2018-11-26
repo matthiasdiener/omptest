@@ -2,6 +2,7 @@
 #include <omp.h>
 #include <chrono>
 #include <stdlib.h>
+#include "HybridOMP.H"
 
 using namespace std;
 
@@ -17,6 +18,8 @@ int main(int argc, char const* argv[])
   X = (double *) malloc(len * sizeof(double));
   Y = (double *) malloc(len * sizeof(double));
   Z = (double *) malloc(len * sizeof(double));
+
+  hyb_num_gpu_available();
 
   // warm up offloading
   #pragma omp target

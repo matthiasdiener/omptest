@@ -7,9 +7,10 @@ FFLAGS=-Wall -O2 -g
 
 all: testomp
 
-testomp: kernelomp.f90 testomp.cpp Makefile
+testomp: kernelomp.f90 testomp.cpp HybridOMP.H HybridOMP.C Makefile
 	$(F90) $(FFLAGS) -fopenmp -c kernelomp.f90
-	$(CXX) $(CXXFLAGS) -fopenmp testomp.cpp kernelomp.o -o $@
+	$(CXX) $(CXXFLAGS) -fopenmp -c HybridOMP.C
+	$(CXX) $(CXXFLAGS) -fopenmp testomp.cpp kernelomp.o HybridOMP.o -o $@
 	LD_LIBRARY_PATH=../hybridOMP/gcc-offload/install/lib64/ ./$@ 10240000
 
 testacc: kernelacc.f90 testacc.cpp Makefile
