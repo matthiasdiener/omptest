@@ -1,6 +1,6 @@
-F90=../hybridOMP/gcc-offload/install/bin/gfortran
-CXX=../hybridOMP/gcc-offload/install/bin/g++
-CC=../hybridOMP/gcc-offload/install/bin/gcc
+F90=gfortran
+CXX=g++
+CC=gcc
 
 CXXFLAGS=-Wall -O2 -g -fno-exceptions
 FFLAGS=-Wall -O2 -g
