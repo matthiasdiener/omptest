@@ -25,3 +25,10 @@ testcuda: testcuda.cu Makefile
 
 clean:
 	rm -f testomp testacc testcuda *.o
+
+
+benchmark: testomp
+	for i in $$(seq 10 30); do \
+		echo $$((2**$$i)); \
+		./testomp $$((2**$$i)); \
+	done
