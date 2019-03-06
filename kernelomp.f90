@@ -8,7 +8,7 @@ SUBROUTINE ZAXPY(START,END,LEN,X,Y,Z)
 
   INTEGER(KIND=8) :: I
   
-  !$omp distribute parallel do
+  !$omp distribute parallel do simd
   DO I = START, END
      Z(I) = 24 * X(I) + Y(I)
   END DO

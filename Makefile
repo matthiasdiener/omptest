@@ -1,3 +1,4 @@
+SHELL=/bin/bash
 
 ifeq (, $(shell which xlf))
 
