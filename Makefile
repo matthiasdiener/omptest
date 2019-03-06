@@ -1,16 +1,30 @@
-F90=gfortran
-CXX=g++
-CC=gcc
 
-CXXFLAGS=-Wall -O2 -g -fno-exceptions
-FFLAGS=-Wall -O2 -g
+ifeq (, $(shell which xlf))
+
+	F90=gfortran
+	CXX=g++
+	CC=gcc
+	CXXFLAGS=-Wall -O2 -g -fno-exceptions
+	FFLAGS=-Wall -O2 -g
+
+else
+
+	F90=xlf_r
+	CXX=xlc++_r
+	CC=xlc_r
+
+	CXXFLAGS=-g -std=c++11 -Wall -qsmp=omp -qoffload -O2
+	FFLAGS=-g -qsmp=omp -qoffload -O2 -qsuppress=1501-510 -qextname
+
+endif
+
 
 all: testomp
 
 testomp: kernelomp.f90 testomp.cpp HybridOMP.H HybridOMP.C Makefile
-	$(F90) $(FFLAGS) -fopenmp -c kernelomp.f90
-	$(CXX) $(CXXFLAGS) -fopenmp -c HybridOMP.C
-	$(CXX) $(CXXFLAGS) -fopenmp testomp.cpp kernelomp.o HybridOMP.o -o $@
+	$(F90) $(FFLAGS) -c kernelomp.f90
+	$(CXX) $(CXXFLAGS) -c HybridOMP.C
+	$(CXX) $(CXXFLAGS) testomp.cpp kernelomp.o HybridOMP.o -o $@
 	./$@ 10240000
 
 testacc: kernelacc.f90 testacc.cpp Makefile
