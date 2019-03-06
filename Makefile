@@ -33,7 +33,7 @@ testacc: kernelacc.f90 testacc.cpp Makefile
 	./$@ 10240000
 
 testcuda: testcuda.cu Makefile
-	/usr/local/cuda-8.0/bin/nvcc -O2 -Wno-deprecated-gpu-targets $< -std=c++11 -g -o $@
+	nvcc -O2 -Wno-deprecated-gpu-targets $< -std=c++11 -g -o $@
 	./$@ 10240000
 
 
