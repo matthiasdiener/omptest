@@ -4,8 +4,8 @@ ifeq (, $(shell which xlf))
 	F90=gfortran
 	CXX=g++
 	CC=gcc
-	CXXFLAGS=-Wall -O2 -g -fno-exceptions
-	FFLAGS=-Wall -O2 -g
+	CXXFLAGS=-Wall -O2 -g -fno-exceptions -fopenmp
+	FFLAGS=-Wall -O2 -g -fopenmp
 
 else
 
