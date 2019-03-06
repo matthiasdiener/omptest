@@ -33,18 +33,21 @@ int main(int argc, char const* argv[])
   }
 
   chrono::steady_clock::time_point begin, end;
+  constexpr int num_iter = 10;
 
 #pragma omp target data map(tofrom:Z[:len],Y[:len],X[:len])
 {
-    long one = 1;
-    
-    {
-      // Measure time for calculation only
-      begin = chrono::steady_clock::now();
-      #pragma omp target teams
-        zaxpy_(&one, &len, &len, X, Y, Z);
-      end = chrono::steady_clock::now();
+  long one = 1;
+
+  {
+    // Measure time for calculation only
+    begin = chrono::steady_clock::now();
+    for(int n=0; n<num_iter; n++) {
+    #pragma omp target teams
+      zaxpy_(&one, &len, &len, X, Y, Z);
     }
+    end = chrono::steady_clock::now();
+  }
 }
 
   for (long i=0; i<len; i++) {
@@ -53,6 +56,6 @@ int main(int argc, char const* argv[])
     }
   }
 
-  printf("%ld %ld microseconds\n", len, chrono::duration_cast<chrono::microseconds>(end - begin).count());
+  printf("%ld %ld microseconds\n", len, chrono::duration_cast<chrono::microseconds>(end - begin).count()/num_iter);
   return 0;
 }

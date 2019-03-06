@@ -28,7 +28,6 @@ clean:
 
 
 benchmark: testomp
-	for i in $$(seq 10 30); do \
-		echo $$((2**$$i)); \
+	for i in $$(seq 10 29); do \
 		./testomp $$((2**$$i)); \
 	done
