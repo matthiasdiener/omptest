@@ -45,7 +45,8 @@ int hyb_num_gpu_available(void)
             printf("A[0]=%d\n",A[0]);
     }
 
-    printf("HybridOMP: Able to use offloading: %s, #devices visible: %d #devices available: %d\n", num_gpus>0?"yes":"NO", num_devices_visible, num_gpus);
+   if (num_gpus == 0)
+        printf("HybridOMP: Able to use offloading: %s, #devices visible: %d #devices available: %d\n", num_gpus>0?"yes":"NO", num_devices_visible, num_gpus);
     return num_gpus;
 }
 

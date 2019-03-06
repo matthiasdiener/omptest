@@ -13,7 +13,6 @@ int main(int argc, char const* argv[])
 {
   double *X, *Y, *Z;
   long len = atoi(argv[1]);
-  int i;
 
   X = (double *) malloc(len * sizeof(double));
   Y = (double *) malloc(len * sizeof(double));
@@ -27,7 +26,7 @@ int main(int argc, char const* argv[])
 
   }
 
-  for (i=0; i<len; i++) {
+  for (long i=0; i<len; i++) {
     X[i] = 1.5;
     Y[i] = 2.3;
     Z[i] = 0.0;
@@ -48,6 +47,12 @@ int main(int argc, char const* argv[])
     }
 }
 
-  printf("%ld %.1f %.1f %ld microseconds\n", len, Z[0], Z[len-1], chrono::duration_cast<chrono::microseconds>(end - begin).count());
+  for (long i=0; i<len; i++) {
+    if (Z[i]!=38.3) {
+        printf("Verification failed elem %ld value %lf\n", i, Z[i]);
+    }
+  }
+
+  printf("%ld %ld microseconds\n", len, chrono::duration_cast<chrono::microseconds>(end - begin).count());
   return 0;
 }
