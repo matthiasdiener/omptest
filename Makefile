@@ -46,3 +46,8 @@ benchmark: testomp
 	for i in $$(seq 10 29); do \
 		./testomp $$((2**$$i)); \
 	done
+
+benchmarkcuda: testcuda
+	for i in $$(seq 10 30); do \
+		./testcuda $$((2**$$i)); \
+	done
