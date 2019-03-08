@@ -26,7 +26,7 @@ testomp: kernelomp.f90 testomp.cpp HybridOMP.H HybridOMP.C Makefile
 	$(F90) $(FFLAGS) -c kernelomp.f90
 	$(CXX) $(CXXFLAGS) -c HybridOMP.C
 	$(CXX) $(CXXFLAGS) testomp.cpp kernelomp.o HybridOMP.o -o $@
-	./$@ 10240000
+	./$@ 100
 
 testacc: kernelacc.f90 testacc.cpp Makefile
 	gfortran $(FFLAGS) -fopenacc -c kernelacc.f90
