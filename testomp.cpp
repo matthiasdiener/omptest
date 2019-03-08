@@ -20,12 +20,6 @@ int main(int argc, char const* argv[])
 
   hyb_num_gpu_available();
 
-  // warm up offloading
-  #pragma omp target
-  {
-
-  }
-
   for (long i=0; i<len; i++) {
     X[i] = 1.5;
     Y[i] = 2.3;
