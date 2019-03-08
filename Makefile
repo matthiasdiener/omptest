@@ -14,8 +14,8 @@ else
 	CXX=xlc++_r
 	CC=xlc_r
 
-	CXXFLAGS=-g -std=c++11 -Wall -qsmp=omp -qoffload -O2
-	FFLAGS=-g -qsmp=omp -qoffload -O2 -qsuppress=1501-510 -qextname
+	CXXFLAGS=-g -std=c++11 -Wall -qsmp=omp -qoffload -Ofast
+	FFLAGS=-g -qsmp=omp -qoffload -Ofast -qsuppress=1501-510 -qextname
 
 endif
 
