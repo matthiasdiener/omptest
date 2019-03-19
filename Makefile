@@ -14,8 +14,8 @@ else
 	CXX=xlc++_r
 	CC=xlc_r
 
-	CXXFLAGS=-g -std=c++11 -Wall -qsmp=omp -qoffload -Ofast
-	FFLAGS=-g -qsmp=omp -qoffload -Ofast -qsuppress=1501-510 -qextname
+	CXXFLAGS=-g -std=c++11 -Wall -qsmp=omp -qoffload -Ofast -I/usr/local/cuda-9.2/include -qtgtarch=auto
+	FFLAGS=-g -qsmp=omp -qoffload -Ofast -qsuppress=1501-510 -qextname -qinfo=omperrtrace -qtgtarch=auto
 
 endif
 
@@ -43,7 +43,7 @@ clean:
 
 
 benchmark: testomp
-	for i in $$(seq 10 29); do \
+	for i in $$(seq 10 31); do \
 		./testomp $$((2**$$i)); \
 	done
 
