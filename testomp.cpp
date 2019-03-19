@@ -12,7 +12,7 @@ extern "C" void zaxpy_(long *start, long *end, long *len, double *X, double *Y, 
 int main(int argc, char const* argv[])
 {
   double *X, *Y, *Z;
-  long len = atoi(argv[1]);
+  long len = atol(argv[1]);
 
   X = (double *) malloc(len * sizeof(double));
   Y = (double *) malloc(len * sizeof(double));
