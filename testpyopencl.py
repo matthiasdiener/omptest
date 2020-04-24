@@ -9,16 +9,11 @@ import sys
 
 size = int(sys.argv[1])
 
-# a_np = np.random.rand(size).astype(np.float64)
-# b_np = np.random.rand(size).astype(np.float64)
+a_np = np.random.rand(size).astype(np.float64)
+b_np = np.random.rand(size).astype(np.float64)
 
-
-a_np = np.full(size,1.5).astype(np.float64)
-b_np = np.full(size,2.3).astype(np.float64)
-
-# a_np = 1.5
-
-# print(a_np[12])
+# a_np = np.full(size,1.5).astype(np.float64)
+# b_np = np.full(size,2.3).astype(np.float64)
 
 ctx = cl.create_some_context()
 queue = cl.CommandQueue(ctx)
@@ -45,23 +40,23 @@ __kernel void sum(
 res_g = cl.Buffer(ctx, mf.WRITE_ONLY, a_np.nbytes)
 cl.enqueue_copy(queue, b_g, b_np)
 cl.enqueue_barrier(queue)
-end = time.time()
-# print(size, (end - start)* 1000*1000) #microseconds
+
+# Warmup
+prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
+prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
+prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
+prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
+queue.finish()
 
 start = time.time()
-prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
-prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
-prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
-prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
-prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
-prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
-prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
-prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
-# prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
-cl.enqueue_barrier(queue)
+for i in range(10):
+    prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
+queue.finish()
 
 end = time.time()
-print(size, (end - start)* 1000*1000) #microseconds
+print((end - start)* 1000*1000/10) #microseconds
+
+# _get_time(queue, prg.sum)
 
 
 # res_np = np.empty_like(a_np)
