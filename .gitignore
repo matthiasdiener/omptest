@@ -3,3 +3,4 @@ testomp
 testcuda
 *.o
 gcc-offload/
+__pycache__/
