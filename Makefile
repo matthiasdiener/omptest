@@ -38,6 +38,10 @@ testcuda: testcuda.cu Makefile
 	./$@ 10240000
 
 
+testopencl: testopencl.cpp Makefile
+	g++ -O2 testopencl.cpp -lOpenCL -lm -std=c++11 -o testopencl
+
+
 clean:
 	rm -f testomp testacc testcuda *.o
 
@@ -50,4 +54,9 @@ benchmark: testomp
 benchmarkcuda: testcuda
 	for i in $$(seq 10 30); do \
 		./testcuda $$((2**$$i)); \
+	done
+
+benchmarkopencl: testopencl
+	for i in $$(seq 10 28); do \
+		./testopencl $$((2**$$i)); \
 	done

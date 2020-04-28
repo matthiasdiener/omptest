@@ -97,6 +97,9 @@ main(int argc, char **argv)
     int threadsPerBlock = 256;
     int blocksPerGrid =(numElements + threadsPerBlock - 1) / threadsPerBlock;
 
+    //Warmup
+    zaxpy<<<blocksPerGrid, threadsPerBlock>>>(24.0, d_A, d_B, d_C, numElements);
+
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     zaxpy<<<blocksPerGrid, threadsPerBlock>>>(24.0, d_A, d_B, d_C, numElements);
     cudaDeviceSynchronize();

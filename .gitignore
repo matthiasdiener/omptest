@@ -1,6 +1,7 @@
 testacc
 testomp
 testcuda
+testopencl
 *.o
 gcc-offload/
 __pycache__/
