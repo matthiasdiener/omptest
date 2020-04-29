@@ -39,11 +39,11 @@ testcuda: testcuda.cu Makefile
 
 
 testopencl: testopencl.cpp Makefile
-	g++ -O2 testopencl.cpp -lOpenCL -lm -std=c++11 -o testopencl
+	g++ -O2 -g testopencl.cpp -lOpenCL -lm -std=c++11 -o testopencl
 
 
 clean:
-	rm -f testomp testacc testcuda *.o
+	rm -f testomp testacc testcuda testopencl *.o
 
 
 benchmark: testomp
@@ -59,4 +59,9 @@ benchmarkcuda: testcuda
 benchmarkopencl: testopencl
 	for i in $$(seq 10 28); do \
 		./testopencl $$((2**$$i)); \
+	done
+
+benchmarkpyopencl:
+	for i in $$(seq 10 28); do \
+		python testpyopencl.py $$((2**$$i)); \
 	done
