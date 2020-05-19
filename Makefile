@@ -65,3 +65,8 @@ benchmarkpyopencl:
 	for i in $$(seq 10 28); do \
 		python testpyopencl.py $$((2**$$i)); \
 	done
+
+benchmarkpycuda:
+	for i in $$(seq 10 28); do \
+		python3 testpycuda.py $$((2**$$i)); \
+	done
