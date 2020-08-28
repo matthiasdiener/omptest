@@ -3,6 +3,43 @@
 #include <chrono>
 #include <iostream>
 
+class GpuTimer {
+
+public:
+      cudaEvent_t start;
+      cudaEvent_t stop;
+
+      GpuTimer()
+      {
+            cudaEventCreate(&start);
+            cudaEventCreate(&stop);
+      }
+
+      ~GpuTimer()
+      {
+            cudaEventDestroy(start);
+            cudaEventDestroy(stop);
+      }
+
+      void Start()
+      {
+            cudaEventRecord(start, 0);
+      }
+
+      void Stop()
+      {
+            cudaEventRecord(stop, 0);
+      }
+
+      float Elapsed()
+      {
+            float elapsed;
+            cudaEventSynchronize(stop);
+            cudaEventElapsedTime(&elapsed, start, stop);
+            return elapsed;
+      }
+};
+
 __global__ void
 zaxpy(const double alpha, const double *A, const double *B, double *C, int numElements)
 {
@@ -20,6 +57,8 @@ main(int argc, char **argv)
 {
     // Error code to check return values for CUDA calls
     cudaError_t err = cudaSuccess;
+
+    auto timer = GpuTimer();
 
     // Print the vector length to be used, and compute its size
     long numElements = atoi(argv[1]);
@@ -100,10 +139,16 @@ main(int argc, char **argv)
     //Warmup
     zaxpy<<<blocksPerGrid, threadsPerBlock>>>(24.0, d_A, d_B, d_C, numElements);
 
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    zaxpy<<<blocksPerGrid, threadsPerBlock>>>(24.0, d_A, d_B, d_C, numElements);
-    cudaDeviceSynchronize();
-    std::chrono::steady_clock::time_point end= std::chrono::steady_clock::now();
+    for(int i=0; i<10; i++) {
+        timer.Start();
+        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+        zaxpy<<<blocksPerGrid, threadsPerBlock>>>(24.0, d_A, d_B, d_C, numElements);
+        cudaDeviceSynchronize();
+        std::chrono::steady_clock::time_point end= std::chrono::steady_clock::now();
+        timer.Stop();
+
+        std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "|" << timer.Elapsed() *1000 << std::endl;
+    }
 
     err = cudaGetLastError();
 
@@ -122,7 +167,7 @@ main(int argc, char **argv)
     }
 
     // printf("%.1f %.1f %.1f ", h_C[0], h_C[1000], h_C[numElements-1]);
-    std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() <<std::endl;
+
 
     // Verify that the result vector is correct
     for (int i = 0; i < numElements; ++i)
